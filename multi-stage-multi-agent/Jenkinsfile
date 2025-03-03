@@ -7,15 +7,35 @@ pipeline {
       }
       steps {
         sh 'mvn --version'
+        
+        // Create a simple Hello World Java program
+        sh '''
+          echo "public class HelloWorld {" > HelloWorld.java
+          echo "  public static void main(String[] args) {" >> HelloWorld.java
+          echo "    System.out.println(\\"Hello from Java!\\");" >> HelloWorld.java
+          echo "  }" >> HelloWorld.java
+          echo "}" >> HelloWorld.java
+
+          javac HelloWorld.java  # Compile the Java program
+          java HelloWorld        # Run the compiled Java program
+        '''
       }
     }
+    
     stage('Front-end') {
       agent {
         docker { image 'node:16-alpine' }
       }
       steps {
         sh 'node --version'
+        
+        // Create a simple Hello World JavaScript program
+        sh '''
+          echo "console.log('Hello from JavaScript!');" > hello.js
+          node hello.js  # Run the JavaScript program
+        '''
       }
     }
   }
 }
+
